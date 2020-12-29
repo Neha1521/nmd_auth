@@ -6,15 +6,16 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -27,18 +28,18 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 public class LocationActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private double latitude,longitude;
-    private List<Address> matches;
+    private List<Address> matchLatlng, matchAddr;
     private EditText address;
-    private SupportMapFragment mapFrag;
     private Geocoder geo;
-    private LocationTrack locationTrack;
     private GoogleMap map;
     private MarkerOptions markerOp;
     private Marker marker;
+    private TextView chosenLocation;
 
 
     @Override
@@ -52,7 +53,9 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
 
         address = findViewById(R.id.etAddress);
         Button submit = findViewById(R.id.btnSubmit);
-        mapFrag = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
+        Button next = findViewById(R.id.btnNext);
+        chosenLocation = findViewById(R.id.tvLocation);
+        SupportMapFragment mapFrag = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
         geo = new Geocoder(this);
 
@@ -68,7 +71,7 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
             }
         }
 
-        locationTrack = new LocationTrack(LocationActivity.this);
+        LocationTrack locationTrack = new LocationTrack(LocationActivity.this);
 
 
         if (locationTrack.canGetLocation()) {
@@ -78,43 +81,55 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
             latitude = locationTrack.getLatitude();
 
 
-            Toast.makeText(getApplicationContext(), "Longitude:" + longitude + "\nLatitude:" + latitude, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "Longitude:" + longitude + "\nLatitude:" + latitude, Toast.LENGTH_SHORT).show();
 
         } else {
 
             locationTrack.showSettingsAlert();
         }
 
-        mapFrag.getMapAsync(this);
-
-
-
+        Objects.requireNonNull(mapFrag).getMapAsync(this);
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 try {
-                    matches = geo.getFromLocationName(address.getText().toString(),1);
+                    matchLatlng = geo.getFromLocationName(address.getText().toString(),1);
                 }
                 catch (IOException e){
                     e.printStackTrace();
                 }
 
-                if (!matches.isEmpty()){
-                    latitude = matches.get(0).getLatitude();
-                    longitude = matches.get(0).getLongitude();
+                if (!matchLatlng.isEmpty()){
+                    latitude = matchLatlng.get(0).getLatitude();
+                    longitude = matchLatlng.get(0).getLongitude();
 
                     LatLng curLoc = new LatLng(latitude,longitude);
                     marker.remove();
-                    markerOp = new MarkerOptions().position(curLoc).title("Selected Location").draggable(true);
+                    markerOp = new MarkerOptions().position(curLoc).title("Selected Location");
                     marker = map.addMarker(markerOp);
-                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(curLoc, 15));
+
+                    try {
+                        matchAddr = geo.getFromLocation(latitude, longitude, 1);
+                        chosenLocation.setText(String.format("%s", matchAddr.get(0).getAddressLine(0)));
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(curLoc, 17.5f));
 
                 }
             }
         });
 
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LocationActivity.this, LocListActivity.class));
+            }
+        });
 
     }
     @Override
@@ -135,9 +150,18 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
         LatLng curLoc = new LatLng(latitude,longitude);
-        markerOp = new MarkerOptions().position(curLoc).title("Current Location").draggable(true);
+        markerOp = new MarkerOptions().position(curLoc).title("Current Location");
         marker = googleMap.addMarker(markerOp);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(curLoc, 15));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(curLoc, 17.5f));
+        try {
+            matchAddr = geo.getFromLocation(latitude, longitude, 1);
+            chosenLocation.setText(String.format("%s", matchAddr.get(0).getAddressLine(0)));
+
+            //Toast.makeText(LocationActivity.this, matches.get(0).getAddressLine(0)+"\n"+matches.get(0).getAddressLine(1)
+            //+"\n"+matches.get(0).getAdminArea()+"\n"+matches.get(0).getPostalCode(), Toast.LENGTH_LONG).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
@@ -153,17 +177,14 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
                 marker = map.addMarker(markerOp);
 
                 try {
-                    matches = geo.getFromLocation(latitude, longitude, 1);
-                    Toast.makeText(LocationActivity.this, matches.get(0).getAddressLine(0)+"\n"+matches.get(0).getAddressLine(1)
-                    +"\n"+matches.get(0).getAdminArea()+"\n"+matches.get(0).getPostalCode(), Toast.LENGTH_LONG).show();
+                    matchAddr = geo.getFromLocation(latitude, longitude, 1);
+                    chosenLocation.setText(String.format("%s", matchAddr.get(0).getAddressLine(0)));
+
+                    //Toast.makeText(LocationActivity.this, matches.get(0).getAddressLine(0)+"\n"+matches.get(0).getAddressLine(1)
+                    //+"\n"+matches.get(0).getAdminArea()+"\n"+matches.get(0).getPostalCode(), Toast.LENGTH_LONG).show();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-
-
-
-
 
             }
         });
