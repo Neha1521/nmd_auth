@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "205143664777",
+    "project_id": "nmd-auth",
+    "storage_bucket": "nmd-auth.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:205143664777:android:89ba040f80c2744bfa3e58",
+        "android_client_info": {
+          "package_name": "com.example.nmd_auth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "205143664777-ito8pp3ssebta7jv8c94k8h2knqm4sdt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.nmd_auth",
+            "certificate_hash": "9cbb215ede853a8c493f167cc134d876b8aa0fba"
+          }
+        },
+        {
+          "client_id": "205143664777-r52de5bcd5e879gf1botsof6pqj00mfd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANICPotZ0dxfLai4gp0WiRxlsGfRv7sV4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "205143664777-r52de5bcd5e879gf1botsof6pqj00mfd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

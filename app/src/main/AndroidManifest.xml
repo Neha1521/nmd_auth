@@ -11,21 +11,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LocListActivity">
+        <activity android:name=".SignupActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".StartActivity">
+
+        </activity>
+        <activity android:name=".LocListActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyANICPotZ0dxfLai4gp0WiRxlsGfRv7sV4" />
 
-        <activity android:name=".LocationActivity">
-
-        </activity>
+        <activity android:name=".LocationActivity" />
 
         <service android:name=".LocationTrack" />
     </application>

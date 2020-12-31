@@ -25,6 +25,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
 import java.util.List;
@@ -32,6 +34,7 @@ import java.util.Objects;
 
 public class LocationActivity extends AppCompatActivity implements OnMapReadyCallback {
 
+    private FirebaseDatabase fireDb = FirebaseDatabase.getInstance();
     private double latitude,longitude;
     private List<Address> matchLatlng, matchAddr;
     private EditText address;
@@ -53,7 +56,7 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
 
         address = findViewById(R.id.etAddress);
         Button submit = findViewById(R.id.btnSubmit);
-        Button next = findViewById(R.id.btnNext);
+        final Button next = findViewById(R.id.btnNext);
         chosenLocation = findViewById(R.id.tvLocation);
         SupportMapFragment mapFrag = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
@@ -114,6 +117,8 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
                         matchAddr = geo.getFromLocation(latitude, longitude, 1);
                         chosenLocation.setText(String.format("%s", matchAddr.get(0).getAddressLine(0)));
 
+
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -127,6 +132,11 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String key = getIntent().getStringExtra("Key");
+                DatabaseReference addrDb = fireDb.getReference(Objects.requireNonNull(key));
+                addrDb.child("Latitude").setValue(latitude);
+                addrDb.child("Longitude").setValue(longitude);
+                //addrDb.child(new LatLng(latitude, longitude).toString()).setValue(matchAddr.toString());
                 startActivity(new Intent(LocationActivity.this, LocListActivity.class));
             }
         });
