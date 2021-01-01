@@ -25,6 +25,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -35,6 +36,7 @@ import java.util.Objects;
 public class LocationActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private FirebaseDatabase fireDb = FirebaseDatabase.getInstance();
+    private FirebaseAuth fireAuth = FirebaseAuth.getInstance();
     private double latitude,longitude;
     private List<Address> matchLatlng, matchAddr;
     private EditText address;
@@ -132,11 +134,11 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                DatabaseReference addrDb = fireDb.getReference(Objects.requireNonNull(fireAuth.getCurrentUser()).getUid());
                 String key = getIntent().getStringExtra("Key");
-                DatabaseReference addrDb = fireDb.getReference(Objects.requireNonNull(key));
-                addrDb.child("Latitude").setValue(latitude);
-                addrDb.child("Longitude").setValue(longitude);
-                //addrDb.child(new LatLng(latitude, longitude).toString()).setValue(matchAddr.toString());
+                Toast.makeText(LocationActivity.this, latitude+" "+longitude, Toast.LENGTH_SHORT).show();
+                addrDb.child(Objects.requireNonNull(key)).setValue(latitude+" "+longitude);
                 startActivity(new Intent(LocationActivity.this, LocListActivity.class));
             }
         });
