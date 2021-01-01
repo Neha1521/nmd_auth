@@ -22,6 +22,8 @@ public class LocListActivity extends AppCompatActivity {
     private FirebaseDatabase fireDb;
     private ListView lvAddr;
     private List<String> addr;
+    private static Integer addrCnt = 0;
+    private Button add, next;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,18 +34,35 @@ public class LocListActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_loc_list);
 
-        Button add = findViewById(R.id.btnAdd);
+        add = findViewById(R.id.btnAdd);
+        next = findViewById(R.id.btnNext);
         lvAddr = findViewById(R.id.lvAddr);
         fireDb = FirebaseDatabase.getInstance();
+
+        if (addrCnt>=3){
+            Toast.makeText(LocListActivity.this,"hi", Toast.LENGTH_SHORT).show();
+            add.setVisibility(View.INVISIBLE);
+            next.setVisibility(View.VISIBLE);
+        }
 
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String key = getIntent().getStringExtra("Key");
+
+
+                addrCnt += 1;
                 Intent intent = new Intent(LocListActivity.this, LocationActivity.class);
-                intent.putExtra("Key", key);
+                intent.putExtra("Key", addrCnt.toString());
                 startActivity(intent);
+
+            }
+        });
+
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LocListActivity.this, LogOutActivity.class));
             }
         });
     }

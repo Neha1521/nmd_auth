@@ -8,6 +8,8 @@ public class User {
 
     }
 
+
+
     public User(String sUsername, String sPassword, String sMail, String sPhone){
         this.sUsername = sUsername;
         this.sPassword = sPassword;
