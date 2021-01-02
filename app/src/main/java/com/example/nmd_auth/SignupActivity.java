@@ -3,6 +3,7 @@ package com.example.nmd_auth;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
+import java.util.Random;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -57,16 +59,36 @@ public class SignupActivity extends AppCompatActivity {
                     ValueEventListener valueEventListener = new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            int flag = 0;
+
                             for(DataSnapshot snapshot1:snapshot.getChildren()){
-                               if(sMail.equals(snapshot1.getKey())){
+                               if(sMail.equals(snapshot1.getValue())){
                                    //proceed to location check
-                                   Intent intent = new Intent(SignupActivity.this, LogOutActivity.class);
-                                   intent.putExtra("Mail", sMail);
-                                   startActivity(intent);
+                                   flag = 1;
+                                   @SuppressLint("DefaultLocale") final String id = String.format("%04d", new Random().nextInt(10000));
+
+                                   new Thread(new Runnable() {
+
+                                       @Override
+                                       public void run() {
+                                           try {
+                                               GMailSender sender = new GMailSender("nmdauth@gmail.com",
+                                                       "naimurukudm!");
+                                               sender.sendMail("Hello", "This is sent from our authentication app for testing purposes. This is your OTP"+ id,
+                                                       "nmdauth@gmail.com", "curdle39@gmail.com");
+                                           } catch (Exception e) {
+                                               Log.e("SendMail", e.getMessage(), e);
+                                           }
+                                       }
+
+                                   }).start();
+                                   startActivity(new Intent(SignupActivity.this, PassCheckActivity.class).putExtra("OTP",id));
                                }
                             }
                             // proceed to user set up
-                            setUp(sMail);
+                            if(flag == 0){
+                                setUp(sMail);
+                            }
                         }
 
                         @Override

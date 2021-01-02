@@ -2,8 +2,12 @@ package com.example.nmd_auth;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.WindowManager;
+
+import java.util.Random;
 
 public class StartActivity extends AppCompatActivity {
 
@@ -15,6 +19,7 @@ public class StartActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_start);
+
 
     }
 }
