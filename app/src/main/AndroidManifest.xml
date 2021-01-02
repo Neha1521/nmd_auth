@@ -3,6 +3,7 @@
     package="com.example.nmd_auth">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -11,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LogOutActivity"></activity>
+        <activity android:name=".PassCheckActivity"></activity>
+        <activity android:name=".LogOutActivity" />
         <activity android:name=".UserDetailsActivity" />
         <activity android:name=".LocationCheck" />
         <activity android:name=".SignupActivity">
@@ -21,7 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".StartActivity" />
+        <activity android:name=".StartActivity"></activity>
         <activity android:name=".LocListActivity" />
 
         <meta-data

@@ -8,4 +8,6 @@
     <string name="mail">Mail</string>
     <string name="phone">Phone</string>
     <string name="log_out">Log Out</string>
+    <string name="enter_otp">Enter OTP</string>
+    <string name="next">Next</string>
 </resources>
