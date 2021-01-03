@@ -3,7 +3,10 @@ package com.example.nmd_auth;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.WindowManager;
 
@@ -20,6 +23,13 @@ public class StartActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_start);
 
+        final Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startActivity(new Intent(StartActivity.this, ChooseActivity.class));
+            }
+        }, 2000);
 
     }
 }

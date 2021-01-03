@@ -35,4 +35,6 @@ dependencies {
     implementation files('/home/neha/AndroidStudioProjects/nmd_auth/libs/activation.jar')
     implementation files('/home/neha/AndroidStudioProjects/nmd_auth/libs/additionnal.jar')
     implementation files('/home/neha/AndroidStudioProjects/nmd_auth/libs/mail.jar')
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
+
 }

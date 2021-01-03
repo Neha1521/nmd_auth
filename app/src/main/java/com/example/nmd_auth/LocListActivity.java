@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.location.Address;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -33,6 +34,8 @@ public class LocListActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_loc_list);
+
+        Log.e("LocAct","now");
 
         add = findViewById(R.id.btnAdd);
         next = findViewById(R.id.btnNext);

@@ -6,11 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 
-import com.google.firebase.auth.FirebaseAuth;
-
-public class LogOutActivity extends AppCompatActivity {
+public class ChooseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,14 +16,19 @@ public class LogOutActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        setContentView(R.layout.activity_log_out);
+        setContentView(R.layout.activity_choose);
 
-        Button logout = findViewById(R.id.btnLogout);
-        logout.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btnSignup).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(LogOutActivity.this, StartActivity.class));
+                startActivity(new Intent(ChooseActivity.this, SignupActivity.class));
+            }
+        });
+
+        findViewById(R.id.btnSignin).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ChooseActivity.this, SignInActivity.class));
             }
         });
 
