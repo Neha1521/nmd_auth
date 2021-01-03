@@ -12,6 +12,8 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/montserrat"
         android:text="Add upto 3 locations"
+        android:textColor="#000000"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"

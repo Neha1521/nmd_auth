@@ -2,6 +2,7 @@ package com.example.nmd_auth;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
@@ -33,6 +34,7 @@ public class PassCheckActivity extends AppCompatActivity {
                 String userOtp = otp.getText().toString();
                 if(!userOtp.isEmpty() && userOtp.equals(actualOtp)){
                     Toast.makeText(PassCheckActivity.this, "Successs",Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(PassCheckActivity.this, LogOutActivity.class));
                 }
                 else {
                     Toast.makeText(PassCheckActivity.this, "Wrong OTP",Toast.LENGTH_SHORT).show();

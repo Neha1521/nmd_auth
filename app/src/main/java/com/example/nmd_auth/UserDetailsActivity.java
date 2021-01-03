@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -37,6 +38,8 @@ public class UserDetailsActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_user_details);
+
+        Log.e("UserAct","now");
 
         phone = findViewById(R.id.etPhone);
         password = findViewById(R.id.etPassword);
