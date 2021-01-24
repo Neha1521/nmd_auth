@@ -12,16 +12,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ChooseActivity"></activity>
+        <activity android:name=".PasswordActivity"></activity>
+        <activity android:name=".ChooseActivity" />
         <activity android:name=".SignInActivity" />
         <activity android:name=".PassCheckActivity" />
         <activity android:name=".LogOutActivity" />
         <activity android:name=".UserDetailsActivity" />
         <activity android:name=".LocationCheck" />
-        <activity android:name=".SignupActivity">
-
-        </activity>
-        <activity android:name=".StartActivity" >
+        <activity android:name=".SignupActivity"></activity>
+        <activity android:name=".StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
