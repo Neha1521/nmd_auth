@@ -39,7 +39,7 @@ public class UserDetailsActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_user_details);
 
-        Log.e("UserAct","now");
+        Log.e("UserAct", "now");
 
         phone = findViewById(R.id.etPhone);
         password = findViewById(R.id.etPassword);
@@ -50,26 +50,33 @@ public class UserDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final String sMail = getIntent().getStringExtra("Mail");
-                final String sPhone, sPassword;
+                final String sPhone, sPassword, sRepass;
                 sPhone = phone.getText().toString();
                 sPassword = password.getText().toString();
-                if(!sPhone.isEmpty() && !sPassword.isEmpty()){
-                    AuthCredential credential = EmailAuthProvider.getCredential(Objects.requireNonNull(sMail), sPassword);
-                    fireAuth = FirebaseAuth.getInstance();
-                    Objects.requireNonNull(fireAuth.getCurrentUser()).linkWithCredential(credential).addOnCompleteListener(UserDetailsActivity.this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            Toast.makeText(UserDetailsActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                sRepass = repass.getText().toString();
+                if (!sPhone.isEmpty() && !sPassword.isEmpty() && !sRepass.isEmpty()) {
+                    if (!sPassword.equals(sRepass)) {
+                        Toast.makeText(UserDetailsActivity.this, "Passwords don't match", Toast.LENGTH_SHORT).show();
+                    } else {
+                        AuthCredential credential = EmailAuthProvider.getCredential(Objects.requireNonNull(sMail), sPassword);
+                        fireAuth = FirebaseAuth.getInstance();
+                        Objects.requireNonNull(fireAuth.getCurrentUser()).linkWithCredential(credential).addOnCompleteListener(UserDetailsActivity.this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                Toast.makeText(UserDetailsActivity.this, "Success", Toast.LENGTH_SHORT).show();
 
-                            DatabaseReference usersDb = firedb.getReference("Users");
-                            DatabaseReference detailsDb = firedb.getReference(fireAuth.getCurrentUser().getUid());
+                                DatabaseReference usersDb = firedb.getReference("Users");
+                                DatabaseReference detailsDb = firedb.getReference(fireAuth.getCurrentUser().getUid());
 
-                            usersDb.child(fireAuth.getCurrentUser().getUid()).setValue(sMail);
-                            detailsDb.child("Phone").setValue(sPhone);
+                                usersDb.child(fireAuth.getCurrentUser().getUid()).setValue(sMail);
+                                detailsDb.child("Phone").setValue(sPhone);
 
-                            startActivity(new Intent(UserDetailsActivity.this, LocListActivity.class));
-                        }
-                    });
+                                startActivity(new Intent(UserDetailsActivity.this, LocListActivity.class).putExtra("Pass", sPassword));
+                            }
+                        });
+                    }
+                } else {
+                    Toast.makeText(UserDetailsActivity.this, "Fill in all fields", Toast.LENGTH_SHORT).show();
                 }
             }
         });

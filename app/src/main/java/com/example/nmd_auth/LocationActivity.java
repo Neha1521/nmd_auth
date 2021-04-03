@@ -137,9 +137,10 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
 
                 DatabaseReference addrDb = fireDb.getReference(Objects.requireNonNull(fireAuth.getCurrentUser()).getUid());
                 String key = getIntent().getStringExtra("Key");
-                Toast.makeText(LocationActivity.this, latitude+" "+longitude, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(LocationActivity.this, latitude+" "+longitude, Toast.LENGTH_SHORT).show();
                 addrDb.child(Objects.requireNonNull(key)).setValue(latitude+" "+longitude);
-                startActivity(new Intent(LocationActivity.this, LocListActivity.class));
+                String pass = getIntent().getStringExtra("Pass");
+                startActivity(new Intent(LocationActivity.this, LocListActivity.class).putExtra("Pass",pass));
             }
         });
 

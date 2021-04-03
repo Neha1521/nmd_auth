@@ -11,4 +11,9 @@
     <string name="enter_otp">Enter OTP</string>
     <string name="next">Next</string>
     <string name="sign_up">Sign Up</string>
+    <string name="add_upto_3_locations">Add upto 3 locations</string>
+    <string name="not_an_existing_user">Not an existing user?</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="sign_in">Sign In</string>
+
 </resources>

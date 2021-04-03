@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,7 +31,8 @@ public class SignInActivity extends AppCompatActivity {
     private double latitude, longitude;
     private String[] userLoc = new String[3];
     private EditText mail;
-    private String sMail, uid;
+    private TextView signUp;
+    private String sMail;
     private FirebaseDatabase fireDb = FirebaseDatabase.getInstance();
 
 
@@ -46,8 +48,15 @@ public class SignInActivity extends AppCompatActivity {
         Log.e("SigninAct","now");
 
         mail = findViewById(R.id.etMail);
+        signUp = findViewById(R.id.tvSignuplink);
         Button submit = findViewById(R.id.btnSubmit);
-        uid = getIntent().getStringExtra("uid");
+
+        signUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SignInActivity.this,SignupActivity.class));
+            }
+        });
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,7 +129,7 @@ public class SignInActivity extends AppCompatActivity {
                             Toast.makeText(getBaseContext(),
                                     "Inside, distance from center: " + dist[0] + " radius: " + rad,
                                     Toast.LENGTH_LONG).show();
-                            sendOTP();
+                            sendOTP(uid);
                             return;
                         }
                     }
@@ -137,7 +146,7 @@ public class SignInActivity extends AppCompatActivity {
     }
 
 
-    private void sendOTP() {
+    private void sendOTP(String uid) {
 
         Log.e("SendOTP",":P");
 
@@ -167,7 +176,10 @@ public class SignInActivity extends AppCompatActivity {
                 }
 
             }).start();
-            startActivity(new Intent(SignInActivity.this, PassCheckActivity.class).putExtra("OTP", generatedToken.toString()));
+            Intent intent = new Intent(SignInActivity.this, OTPCheckActivity.class);
+            intent.putExtra("OTP", generatedToken.toString());
+            intent.putExtra("Uid", uid);
+            startActivity(intent);
 
     }
 }

@@ -35,15 +35,21 @@ public class SignupActivity extends AppCompatActivity {
 
 
     private void setUp(final String mail) {
-        Log.e("Set up", ": :D");
+
         fireAuth = FirebaseAuth.getInstance();
+        /*if(fireAuth.getCurrentUser()!=null){
+            System.out.println(fireAuth.getCurrentUser());
+            if(fireAuth.getCurrentUser().isEmailVerified()){
+                Intent intent = new Intent(SignupActivity.this, LocListActivity.class);
+                intent.putExtra("Mail", mail);
+                startActivity(intent);
+            }
+        }*/
         fireAuth.signInAnonymously()
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-
-
                             Objects.requireNonNull(fireAuth.getCurrentUser()).reload()
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
@@ -58,7 +64,13 @@ public class SignupActivity extends AppCompatActivity {
                                     });
 
                             Objects.requireNonNull(fireAuth.getCurrentUser()).updateEmail(mail);
+                            DatabaseReference uidDb = fireDb.getReference("Uid");
+                            Log.e("Check", mail);
+                            String[] temp = mail.split("\\.");
+                            Log.e("check", temp[0]);
+                            uidDb.child(temp[0]).setValue(fireAuth.getCurrentUser().getUid());
                             fireAuth.getCurrentUser().sendEmailVerification();
+
 
                         } else {
                             Toast.makeText(getApplicationContext(), "Authentication failed.",
