@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,6 +33,7 @@ public class PassCheckActivity extends AppCompatActivity {
     private FirebaseAuth fireAuth;
     private FirebaseDatabase fireDb;
     private EditText password;
+    private TextView name;
     private String dbPass, dbSalt, userPass, uid;
 
     @Override
@@ -46,7 +48,28 @@ public class PassCheckActivity extends AppCompatActivity {
         fireAuth = FirebaseAuth.getInstance();
         fireDb = FirebaseDatabase.getInstance();
         password = findViewById(R.id.etPassword);
+        name = findViewById(R.id.tvName);
         Button submit = findViewById(R.id.btnSubmit);
+        uid = getIntent().getStringExtra("Uid");
+
+        DatabaseReference userDb = fireDb.getReference(Objects.requireNonNull(uid));
+        userDb.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot snapshot1:snapshot.getChildren()){
+                    if(Objects.equals(snapshot1.getKey(), "Name")){
+                        name.setText(Objects.requireNonNull(snapshot1.getValue()).toString());
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,7 +78,7 @@ public class PassCheckActivity extends AppCompatActivity {
                 final String sPass = password.getText().toString();
                 if(!sPass.isEmpty()){
 
-                    uid = getIntent().getStringExtra("Uid");
+
                     DatabaseReference passDb = fireDb.getReference("Pass").child(Objects.requireNonNull(uid));
 
                     passDb.addValueEventListener(new ValueEventListener() {

@@ -1,33 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#D3C0F9"
+    android:background="#FFFFFF"
     tools:context=".OTPCheckActivity">
+
+
+    <TextView
+        android:id="@+id/tvCircle3"
+        android:layout_width="385dp"
+        android:layout_height="352dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="-50dp"
+        android:layout_marginEnd="-200dp"
+        android:background="@drawable/circle_solid"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="112dp"
+        tools:layout_editor_absoluteY="-90dp" />
+
+    <TextView
+        android:id="@+id/tvCircle2"
+        android:layout_width="336dp"
+        android:layout_height="303dp"
+        android:layout_marginStart="-80dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/circle_solid"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="-79dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <TextView
+        android:id="@+id/tvCircle"
+        android:layout_width="267dp"
+        android:layout_height="259dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="-80dp"
+        android:background="@drawable/circle_solid"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="-130dp"
+        tools:layout_editor_absoluteY="-113dp" />
+
+    <TextView
+        android:id="@+id/tvCircle4"
+        android:layout_width="267dp"
+        android:layout_height="259dp"
+        android:layout_marginStart="-100dp"
+        android:layout_marginTop="-100dp"
+        android:background="@drawable/circle_solid"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="-130dp"
+        tools:layout_editor_absoluteY="-113dp" />
 
     <EditText
         android:id="@+id/etOtp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="250dp"
+        android:layout_height="45dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="420dp"
+        android:background="@drawable/rounded_corner_blue"
         android:ems="10"
+        android:gravity="center"
         android:hint="@string/enter_otp"
-        android:inputType="textPersonName"
+        android:inputType="number"
+        android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.336" />
+        app:layout_constraintVertical_bias="0.58" />
 
     <Button
         android:id="@+id/btnNext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
+        android:layout_below="@id/etOtp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/rounded_corners_solid_blue"
         android:text="@string/next"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etOtp" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</RelativeLayout>

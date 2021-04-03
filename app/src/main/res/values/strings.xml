@@ -15,5 +15,7 @@
     <string name="not_an_existing_user">Not an existing user?</string>
     <string name="already_have_an_account">Already have an account?</string>
     <string name="sign_in">Sign In</string>
+    <string name="welcome">Welcome</string>
+    <string name="name">Name</string>
 
 </resources>

@@ -69,7 +69,7 @@ public class UserDetailsActivity extends AppCompatActivity {
                                 DatabaseReference detailsDb = firedb.getReference(fireAuth.getCurrentUser().getUid());
 
                                 usersDb.child(fireAuth.getCurrentUser().getUid()).setValue(sMail);
-                                detailsDb.child("Phone").setValue(sPhone);
+                                detailsDb.child("Name").setValue(sPhone);
 
                                 startActivity(new Intent(UserDetailsActivity.this, LocListActivity.class).putExtra("Pass", sPassword));
                             }

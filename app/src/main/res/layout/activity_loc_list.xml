@@ -4,7 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     tools:context=".LocListActivity">
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="169dp"
+        android:background="@drawable/nmdbg1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/textView"
@@ -12,7 +25,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/montserrat"
         android:text="@string/add_upto_3_locations"
-        android:textColor="#000000"
+        android:textColor="#FFFFFF"
         android:textSize="17sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,11 +51,15 @@
         android:layout_height="389dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
+        android:background="@drawable/top_rounded_corners"
+        android:paddingStart="5dp"
+        android:paddingTop="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.157" />
+        app:layout_constraintVertical_bias="0.157"
+        android:paddingEnd="5dp" />
 
     <Button
         android:id="@+id/btnNext"
@@ -56,4 +73,6 @@
         app:layout_constraintStart_toEndOf="@+id/btnAdd"
         app:layout_constraintTop_toBottomOf="@+id/lvAddr"
         app:layout_constraintVertical_bias="0.53" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

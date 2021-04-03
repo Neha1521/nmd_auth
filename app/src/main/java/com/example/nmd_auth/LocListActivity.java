@@ -73,7 +73,7 @@ public class LocListActivity extends AppCompatActivity {
                 List<Address> address;
                 Geocoder geo = new Geocoder(LocListActivity.this);
                 for (DataSnapshot snapshot1:snapshot.getChildren()) {
-                    if(!Objects.equals(snapshot1.getKey(), "Phone")) {
+                    if(!Objects.equals(snapshot1.getKey(), "Name")) {
                         location = Objects.requireNonNull(snapshot1.getValue()).toString();
                         String[] loc = location.split(" ",2);
                         latitude = Double.parseDouble(loc[0]);

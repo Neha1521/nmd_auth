@@ -107,7 +107,7 @@ public class SignInActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for (DataSnapshot snapshot1:snapshot.getChildren()) {
-                        if(!Objects.equals(snapshot1.getKey(), "Phone")) {
+                        if(!Objects.equals(snapshot1.getKey(), "Name")) {
                             System.out.println(snapshot1.getKey());
                             userLoc[Integer.valueOf(Objects.requireNonNull(snapshot1.getKey()))-1] = Objects.requireNonNull(snapshot1.getValue()).toString();
                         }
