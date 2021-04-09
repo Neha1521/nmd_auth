@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -13,7 +12,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,16 +19,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.math.BigInteger;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
-import java.util.Random;
 
 public class PassCheckActivity extends AppCompatActivity {
 
-    private FirebaseAuth fireAuth;
     private FirebaseDatabase fireDb;
     private EditText password;
     private TextView name;
@@ -45,7 +40,6 @@ public class PassCheckActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_pass_check);
 
-        fireAuth = FirebaseAuth.getInstance();
         fireDb = FirebaseDatabase.getInstance();
         password = findViewById(R.id.etPassword);
         name = findViewById(R.id.tvName);
@@ -85,13 +79,11 @@ public class PassCheckActivity extends AppCompatActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             for (DataSnapshot snapshot1: snapshot.getChildren()){
-                                System.out.println(snapshot1);
                                 if (Objects.equals(snapshot1.getKey(), "Password"))
                                     dbPass = Objects.requireNonNull(snapshot1.getValue()).toString();
                                 if (Objects.equals(snapshot1.getKey(), "Salt"))
                                     dbSalt = Objects.requireNonNull(snapshot1.getValue()).toString();
                             }
-                            System.out.println(dbPass +"  "+dbSalt+"  "+userPass);
                             userPass = genPass(sPass, dbSalt);
 
                             if (Objects.equals(dbPass, userPass)){
@@ -128,13 +120,6 @@ public class PassCheckActivity extends AppCompatActivity {
         byte[] hash = Objects.requireNonNull(digest).digest(saltedPass.getBytes(StandardCharsets.UTF_8));
 
         return toHexString(hash);
-    }
-    private String genSalt(){
-
-        byte[] array = new byte[4];
-        new Random().nextBytes(array);
-
-        return new String(array, Charset.forName("UTF-8"));
     }
     public static String toHexString(byte[] hash)
     {

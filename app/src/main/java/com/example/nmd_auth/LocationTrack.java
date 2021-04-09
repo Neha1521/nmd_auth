@@ -13,14 +13,13 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 
 public class LocationTrack extends Service implements LocationListener {
 
-    private final Context mContext;
+    private Context mContext;
 
 
     boolean checkGPS = false;
@@ -40,6 +39,10 @@ public class LocationTrack extends Service implements LocationListener {
 
     private static final long MIN_TIME_BW_UPDATES = 1000 * 60;
     protected LocationManager locationManager;
+
+    public LocationTrack(){
+
+    }
 
     public LocationTrack(Context mContext) {
         this.mContext = mContext;
@@ -94,7 +97,6 @@ public class LocationTrack extends Service implements LocationListener {
             e.printStackTrace();
         }
 
-        Log.e("l", String.valueOf(loc));
         return loc;
     }
 
@@ -166,7 +168,7 @@ public class LocationTrack extends Service implements LocationListener {
     }
 
     @Override
-    public void onStatusChanged(String s, int i, Bundle bundle) {
+    public void onStatusChanged(String provider, int status, Bundle extras) {
 
     }
 

@@ -7,13 +7,11 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -29,7 +27,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
@@ -38,7 +35,6 @@ public class LocListActivity extends AppCompatActivity {
 
     private FirebaseDatabase fireDb;
     private FirebaseAuth fireAuth;
-    private ListView lvAddr;
     private List<String> addr;
     private static Integer addrCnt = 0;
     private ArrayAdapter<String> addrAdapter;
@@ -52,11 +48,10 @@ public class LocListActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_loc_list);
 
-        Log.e("LocAct","now");
 
         Button add = findViewById(R.id.btnAdd);
         Button next = findViewById(R.id.btnNext);
-        lvAddr = findViewById(R.id.lvAddr);
+        ListView lvAddr = findViewById(R.id.lvAddr);
         fireDb = FirebaseDatabase.getInstance();
         fireAuth = FirebaseAuth.getInstance();
         addr = new ArrayList<>();
@@ -112,7 +107,6 @@ public class LocListActivity extends AppCompatActivity {
 
                 addrCnt += 1;
                 String pass = getIntent().getStringExtra("Pass");
-                Log.e("Pass", pass);
                 Intent intent = new Intent(LocListActivity.this, LocationActivity.class);
                 intent.putExtra("Key", addrCnt.toString());
                 intent.putExtra("Pass", pass);

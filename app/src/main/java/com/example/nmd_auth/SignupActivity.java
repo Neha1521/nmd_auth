@@ -4,9 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -18,18 +16,12 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 
 public class SignupActivity extends AppCompatActivity {
 
     private EditText mail;
-    private FirebaseDatabase fireDb = FirebaseDatabase.getInstance();
     private FirebaseAuth fireAuth = FirebaseAuth.getInstance();
 
 
@@ -37,14 +29,7 @@ public class SignupActivity extends AppCompatActivity {
     private void setUp(final String mail) {
 
         fireAuth = FirebaseAuth.getInstance();
-        /*if(fireAuth.getCurrentUser()!=null){
-            System.out.println(fireAuth.getCurrentUser());
-            if(fireAuth.getCurrentUser().isEmailVerified()){
-                Intent intent = new Intent(SignupActivity.this, LocListActivity.class);
-                intent.putExtra("Mail", mail);
-                startActivity(intent);
-            }
-        }*/
+
         fireAuth.signInAnonymously()
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -59,16 +44,10 @@ public class SignupActivity extends AppCompatActivity {
                                                 intent.putExtra("Mail", mail);
                                                 startActivity(intent);
                                             }
-                                            Log.e("K",( fireAuth.getCurrentUser().isEmailVerified() ? "VERIFIED" : "Not verified"));
                                         }
                                     });
 
                             Objects.requireNonNull(fireAuth.getCurrentUser()).updateEmail(mail);
-                            DatabaseReference uidDb = fireDb.getReference("Uid");
-                            Log.e("Check", mail);
-                            String[] temp = mail.split("\\.");
-                            Log.e("check", temp[0]);
-                            uidDb.child(temp[0]).setValue(fireAuth.getCurrentUser().getUid());
                             fireAuth.getCurrentUser().sendEmailVerification();
 
 
@@ -90,8 +69,6 @@ public class SignupActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_signup);
 
-        Log.e("SignupAct","now");
-
         mail = findViewById(R.id.etMail);
         Button submit = findViewById(R.id.btnSubmit);
 
@@ -109,9 +86,7 @@ public class SignupActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 final String sMail;
-                final int[] flag = {0};
                 sMail = mail.getText().toString();
-                DatabaseReference userDb = fireDb.getReference("Users");
 
                 if(!sMail.isEmpty()){
 

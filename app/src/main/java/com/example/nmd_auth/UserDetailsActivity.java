@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -26,9 +26,8 @@ import java.util.Objects;
 public class UserDetailsActivity extends AppCompatActivity {
 
     private EditText phone, password, repass;
-    private Button submit;
     private FirebaseAuth fireAuth;
-    private FirebaseDatabase firedb = FirebaseDatabase.getInstance();
+    private FirebaseDatabase fireDb = FirebaseDatabase.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +38,10 @@ public class UserDetailsActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_user_details);
 
-        Log.e("UserAct", "now");
-
         phone = findViewById(R.id.etPhone);
         password = findViewById(R.id.etPassword);
         repass = findViewById(R.id.etRepass);
-        submit = findViewById(R.id.btnSubmit);
+        Button submit = findViewById(R.id.btnSubmit);
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,8 +62,8 @@ public class UserDetailsActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 Toast.makeText(UserDetailsActivity.this, "Success", Toast.LENGTH_SHORT).show();
 
-                                DatabaseReference usersDb = firedb.getReference("Users");
-                                DatabaseReference detailsDb = firedb.getReference(fireAuth.getCurrentUser().getUid());
+                                DatabaseReference usersDb = fireDb.getReference("Users");
+                                DatabaseReference detailsDb = fireDb.getReference(fireAuth.getCurrentUser().getUid());
 
                                 usersDb.child(fireAuth.getCurrentUser().getUid()).setValue(sMail);
                                 detailsDb.child("Name").setValue(sPhone);

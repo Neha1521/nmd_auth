@@ -1,12 +1,12 @@
 package com.example.nmd_auth;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -14,7 +14,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,7 +22,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.Arrays;
 import java.util.Objects;
 
 public class SignInActivity extends AppCompatActivity {
@@ -31,7 +29,6 @@ public class SignInActivity extends AppCompatActivity {
     private double latitude, longitude;
     private String[] userLoc = new String[3];
     private EditText mail;
-    private TextView signUp;
     private String sMail;
     private FirebaseDatabase fireDb = FirebaseDatabase.getInstance();
 
@@ -45,10 +42,8 @@ public class SignInActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_sign_in);
 
-        Log.e("SigninAct","now");
-
         mail = findViewById(R.id.etMail);
-        signUp = findViewById(R.id.tvSignuplink);
+        TextView signUp = findViewById(R.id.tvSignuplink);
         Button submit = findViewById(R.id.btnSubmit);
 
         signUp.setOnClickListener(new View.OnClickListener() {
@@ -91,7 +86,6 @@ public class SignInActivity extends AppCompatActivity {
 
     }
     private void checkLocation(final String uid) {
-        Log.e("Check loc","XD");
 
         LocationTrack locationTrack = new LocationTrack(SignInActivity.this);
 
@@ -100,7 +94,28 @@ public class SignInActivity extends AppCompatActivity {
             longitude = locationTrack.getLongitude();
             latitude = locationTrack.getLatitude();
 
-            Log.e("", uid);
+            final int[] flag = {0};
+
+            DatabaseReference db = fireDb.getReference();
+            db.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot snapshot1:snapshot.getChildren()){
+                        if (Objects.equals(snapshot1.getKey(), uid)){
+                            flag[0] = 1;
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+            if (flag[0] == 0){
+                Toast.makeText(SignInActivity.this,"Not an registered account.", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(SignInActivity.this, SignInActivity.class));
+            }
 
             DatabaseReference locDb = fireDb.getReference(uid);
             locDb.addValueEventListener(new ValueEventListener() {
@@ -108,19 +123,19 @@ public class SignInActivity extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for (DataSnapshot snapshot1:snapshot.getChildren()) {
                         if(!Objects.equals(snapshot1.getKey(), "Name")) {
-                            System.out.println(snapshot1.getKey());
+
                             userLoc[Integer.valueOf(Objects.requireNonNull(snapshot1.getKey()))-1] = Objects.requireNonNull(snapshot1.getValue()).toString();
                         }
                     }
                     for(int i=0;i<3;i++) {
-                        System.out.println(Arrays.toString(userLoc));
+
                         String[] loc = userLoc[i].split(" ", 2);
                         float[] dist = new float[1];
                         Location.distanceBetween(latitude, longitude,
                                 Double.parseDouble(loc[0]), Double.parseDouble(loc[1]), dist);
 
                         double rad = 2.0 * 1000.0;
-                        System.out.println(rad + " " + dist[0]);
+
                         if (dist[0] > rad) {
                             Toast.makeText(getBaseContext(),
                                     "Outside, distance from center: " + dist[0] + " radius: " + rad,
@@ -148,7 +163,6 @@ public class SignInActivity extends AppCompatActivity {
 
     private void sendOTP(String uid) {
 
-        Log.e("SendOTP",":P");
 
         final StringBuilder generatedToken = new StringBuilder();
         try {
@@ -171,7 +185,7 @@ public class SignInActivity extends AppCompatActivity {
                         sender.sendMail("Hello", "This is sent from our authentication app for testing purposes. This is your OTP "+ generatedToken.toString(),
                                 "nmdauth@gmail.com", sMail);
                     } catch (Exception e) {
-                        Log.e("SendMail", e.getMessage(), e);
+                        e.printStackTrace();
                     }
                 }
 
