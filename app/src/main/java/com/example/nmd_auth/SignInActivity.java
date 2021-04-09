@@ -3,8 +3,12 @@ package com.example.nmd_auth;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
@@ -45,6 +49,18 @@ public class SignInActivity extends AppCompatActivity {
         mail = findViewById(R.id.etMail);
         TextView signUp = findViewById(R.id.tvSignuplink);
         Button submit = findViewById(R.id.btnSubmit);
+
+        if (ContextCompat.checkSelfPermission(SignInActivity.this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            if (ActivityCompat.shouldShowRequestPermissionRationale(SignInActivity.this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)){
+                ActivityCompat.requestPermissions(SignInActivity.this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            }else{
+                ActivityCompat.requestPermissions(SignInActivity.this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            }
+        }
 
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override

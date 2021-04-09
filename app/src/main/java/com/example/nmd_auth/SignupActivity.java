@@ -2,8 +2,12 @@ package com.example.nmd_auth;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -23,8 +27,6 @@ public class SignupActivity extends AppCompatActivity {
 
     private EditText mail;
     private FirebaseAuth fireAuth = FirebaseAuth.getInstance();
-
-
 
     private void setUp(final String mail) {
 
@@ -79,6 +81,19 @@ public class SignupActivity extends AppCompatActivity {
                 fireAuth.signOut();
             }
         });
+
+        if (ContextCompat.checkSelfPermission(SignupActivity.this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            if (ActivityCompat.shouldShowRequestPermissionRationale(SignupActivity.this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)){
+                ActivityCompat.requestPermissions(SignupActivity.this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            }else{
+                ActivityCompat.requestPermissions(SignupActivity.this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            }
+        }
+
 
 
         submit.setOnClickListener(new View.OnClickListener() {
